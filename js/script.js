@@ -7,8 +7,8 @@ add.addEventListener('click', function(e) {
   e.preventDefault();
   newTask = document.forms.newItemForm.newItem.value
 
-  if(newTask) {
-  addItem();
+  if (newTask) {
+    addItem();
   };
 });
 
@@ -32,7 +32,7 @@ function moveItem() {
   let text = item.querySelector('#text');
   let edit = item.querySelector('#edit');
 
-  if(currentList === 'todo') {
+  if (currentList === 'todo') {
     parent.removeChild(item);
     completed.insertBefore(item, completed.childNodes[0]);
 
@@ -47,7 +47,7 @@ function moveItem() {
     checkbox.className = 'fa fa-square-o';
     text.className = '';
     edit.style.display = 'block';
-  }
+  };
 };
 
 // function to edit task description
@@ -119,34 +119,34 @@ function addItem() {
   var item = createElem('li', 'item', 'item');
 
   // task status
-  var status = createElem('button','', 'status');
-      status.addEventListener('click', moveItem);
+  var status = createElem('button', '', 'status');
+  status.addEventListener('click', moveItem);
   var square = createElem('i', 'fa fa-square-o');
-      square.setAttribute('aria-hidden', 'true');
+  square.setAttribute('aria-hidden', 'true');
   var checked = createElem('i', 'fa fa-checked-square-o hide');
-      checked.setAttribute('aria-hidden', 'true');
+  checked.setAttribute('aria-hidden', 'true');
 
   // task description
-  var text = createElem('p','','text');
+  var text = createElem('p', '', 'text');
 
   // edit task DIV
   var editContainer = createElem('div', '', 'editContainer');
-      editContainer.style.display = 'none';
+  editContainer.style.display = 'none';
   var editField = createElem('p', '', 'editField');
-  var newText = createElem('input', '','newText');
-  var accept = createElem('button', '','accept');
+  var newText = createElem('input', '', 'newText');
+  var accept = createElem('button', '', 'accept');
   var acceptIcon = createElem('button', 'fa fa-check', '', true);
-  var reject =  createElem('button', '', 'reject');
+  var reject = createElem('button', '', 'reject');
   var rejectIcon = createElem('button', 'fa fa-times', '', true);
 
   // delete tast
   var clear = createElem('button', 'btn-rt clear', 'clear');
-      clear.addEventListener('click', deleteItem);
+  clear.addEventListener('click', deleteItem);
   var trash = createElem('i', 'fa fa-trash-o', '', true);
 
   // edit task description
   var edit = createElem('button', 'btn-rt edit', 'edit');
-      edit.addEventListener('click', editItem);
+  edit.addEventListener('click', editItem);
   var pencil = createElem('i', 'fa fa-pencil', '', true);
 
   // append new elements
