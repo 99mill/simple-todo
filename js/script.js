@@ -16,10 +16,9 @@ function moveItem() {
   let item = this.parentNode;
   let parent = this.parentNode.parentNode;
   let completed = document.querySelector('#completed');
-  let siblings = this.parentNode;
-  let checkbox = siblings.querySelector('#status').querySelector('i');
-  let text = siblings.querySelector('#text');
-  let edit = siblings.querySelector('#edit');
+  let checkbox = item.querySelector('#status').querySelector('i');
+  let text = item.querySelector('#text');
+  let edit = item.querySelector('#edit');
 
   if(currentList === 'todo') {
     parent.removeChild(item);
@@ -42,14 +41,61 @@ function moveItem() {
 // FUNCTION TO EDIT ITEM
 function editItem() {
   let parent = this.parentNode;
-  let oldText = parent.querySelector('#text');
-  let newField = parent.querySelector('#editField');
-  let newText = newField.querySelector('#newText');
+  let taskDesc = parent.querySelector('#text');
+  let editContainer = parent.querySelector('#editContainer');
+  let newText = editContainer.querySelector('#newText');
+  let clear = parent.querySelector('#clear');
+  let edit = parent.querySelector('#edit');
+  let accept = editContainer.querySelector('#accept');
+  let reject = editContainer.querySelector('#reject');
 
-  oldText.style.display = 'none';
-  newField.style.display = 'inline';
+  accept.addEventListener('click', acceptEdit);
+  reject.addEventListener('click', rejectEdit);
 
-}
+  taskDesc.style.display = 'none';
+  clear.style.display = 'none';
+  edit.style.display = 'none';
+  editContainer.style.display = 'inline';
+
+};
+
+// FUNCTION TO ACCEPT EDIT
+function acceptEdit(){
+  let editContainer = this.parentNode;
+  let item = this.parentNode.parentNode;
+  let newTask = editContainer.querySelector('#editField').querySelector('#newText');
+  let val = newTask.value;
+  let taskDesc = item.querySelector('#text');
+  let clear = item.querySelector('#clear');
+  let edit = item.querySelector('#edit');
+
+  if (val) {
+    taskDesc.textContent = val;
+    newTask.value = '';
+
+    taskDesc.style.display = 'inline';
+    clear.style.display = 'inline';
+    edit.style.display = 'inline';
+    editContainer.style.display = 'none';
+  }
+};
+
+// FUNCTION TO REJECT EDIT
+function rejectEdit() {
+  let editContainer = this.parentNode;
+  let item = this.parentNode.parentNode;
+  let newTask = editContainer.querySelector('#editField').querySelector('#newText');
+  let taskDesc = item.querySelector('#text');
+  let clear = item.querySelector('#clear');
+  let edit = item.querySelector('#edit');
+
+  newTask.value = '';
+
+  taskDesc.style.display = 'inline';
+  clear.style.display = 'inline';
+  edit.style.display = 'inline';
+  editContainer.style.display = 'none';
+};
 
 // FUNCTION TO REMOVE TO DO ITEM FROM LIST
 function deleteItem() {
@@ -71,7 +117,7 @@ function addItem() {
   // ADD EVENT LISTENER AND FUNCTIONALITY TO COMPLETION STATUS BUTTON
   status.addEventListener('click', moveItem);
 
-
+  // TASK STATUS
   var square = document.createElement('i');
   square.classList.add('fa', 'fa-square-o');
   square.setAttribute('aria-hidden', 'true');
@@ -80,29 +126,50 @@ function addItem() {
   checked.classList.add('fa', 'fa-check-square-o', 'hide');
   checked.setAttribute('aria-hidden', 'true');
 
+  // TASK DESCRIPTION
   var text = document.createElement('p');
   text.id = 'text';
 
+  // EDIT TASK DIV
+  var editContainer = document.createElement('div');
+  editContainer.id = 'editContainer';
+  editContainer.style.display = 'none';
 
   var editField = document.createElement('p');
   editField.id = 'editField';
-  editField.style.display = 'none';
-
 
   var newText = document.createElement('input');
   newText.id = 'newText';
 
+  // ACCEPT
+  var accept = document.createElement('button');
+  accept.id = 'accept';
+
+  var acceptIcon = document.createElement('button');
+  acceptIcon.classList.add('fa', 'fa-check');
+  acceptIcon.setAttribute('aria-hidden', 'true');
+
+  // REJECT
+  var reject = document.createElement('button');
+  reject.id = 'reject';
+
+  var rejectIcon = document.createElement('button');
+  rejectIcon.classList.add('fa', 'fa-times');
+  rejectIcon.setAttribute('aria-hidden', 'true');
+
+  // DELETE TASK BUTTON
   var clear = document.createElement('button');
   clear.id = 'clear';
   clear.classList.add('btn-rt', 'clear');
-
-  // ADD EVENTLISTENER AND FUNCTIONALITY TO DELETE BUTTON
-  clear.addEventListener('click', deleteItem);
 
   var trash = document.createElement('i');
   trash.classList.add('fa', 'fa-trash-o');
   trash.setAttribute('aria-hidden', 'true');
 
+  // ADD EVENTLISTENER AND FUNCTIONALITY TO DELETE BUTTON
+  clear.addEventListener('click', deleteItem);
+
+  // EDIT TASK BUTTON
   var edit = document.createElement('button');
   edit.id = 'edit';
   edit.classList.add('btn-rt', 'edit');
@@ -117,19 +184,30 @@ function addItem() {
 
 
   // APPEND NEWLY CREATED ELEMENTS
+  // APPEND ENTIRE ITEM
   todo.insertBefore(item, todo.childNodes[0]);
 
+  // APPEND CHILDREN OF THE ITEM
   item.appendChild(status);
   item.appendChild(text);
-  item.appendChild(editField);
+  item.appendChild(editContainer);
   item.appendChild(clear);
   item.appendChild(edit);
 
+  // APPEND CHILDREN OF EDIT DIV
+  editContainer.appendChild(editField);
+  editContainer.appendChild(accept);
+  editContainer.appendChild(reject);
+
+  // APPEND INPUT TO P TAG OF EDIT DIV
   editField.appendChild(newText);
+
+  // APPEND BUTTON ICONS
   status.appendChild(square);
+  accept.appendChild(acceptIcon);
+  reject.appendChild(rejectIcon);
   clear.appendChild(trash);
   edit.appendChild(pencil);
-
 
   // INSERT TEXT FROM INPUT TO P TAG OF NEW ITEM
   var newTask = document.forms.newItemForm.newItem.value;
@@ -138,10 +216,6 @@ function addItem() {
 
 
 };
-
-
-
-
 
 
 
