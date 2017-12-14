@@ -1,6 +1,20 @@
 var newTask = document.forms.newItemForm.newItem.value
 var todo = document.querySelector('#todo');
 var add = document.querySelector('#add');
+var itemArr = [];
+var id = 1;
+
+// item prototype
+function Item(id, task, priority, completed) {
+  this.id = id;
+  this.task = task;
+  this.created = Date.now();
+  this.priority = priority;
+  this.completed = completed;
+}
+
+var test = new Item(123, 'Make bed', false,);
+console.log(test);
 
 // button to create new item
 add.addEventListener('click', function(e) {
@@ -180,4 +194,11 @@ function addItem() {
 
   // clear new task desc
   document.forms.newItemForm.newItem.value = '';
+
+  let arrItem = new Item(id, newTask, false, false);
+  id += 1;
+  itemArr.push(arrItem);
+  console.log(itemArr);
+
+
 };
